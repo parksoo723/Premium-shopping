@@ -1,0 +1,378 @@
+/* ============================================================
+   Paint App — Global Styles
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- CSS Variables ---------- */
+:root {
+  --bg:        #1a1a2e;
+  --surface:   #16213e;
+  --toolbar:   #0f3460;
+  --accent:    #e94560;
+  --accent2:   #533483;
+  --text:      #eaeaea;
+  --text-muted:#888888;
+  --border:    #2a2a4a;
+  --btn-hover: #1a3a6e;
+  --shadow:    0 4px 24px rgba(0,0,0,0.4);
+}
+
+[data-theme="light"] {
+  --bg:        #f0f2f5;
+  --surface:   #ffffff;
+  --toolbar:   #ffffff;
+  --accent:    #e94560;
+  --accent2:   #7c3aed;
+  --text:      #1a1a2e;
+  --text-muted:#666666;
+  --border:    #e0e0e0;
+  --btn-hover: #f0f0f0;
+  --shadow:    0 4px 24px rgba(0,0,0,0.1);
+}
+
+/* ---------- Base ---------- */
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  overflow: hidden;
+}
+
+#root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: inherit;
+}
+
+input[type="range"] {
+  cursor: pointer;
+}
+
+/* ============================================================
+   App Layout
+   ============================================================ */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--bg);
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 20px;
+  background: var(--toolbar);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.app-logo {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+.app-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.app-workspace {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.app-canvas-area {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ============================================================
+   Canvas
+   ============================================================ */
+.canvas-container {
+  flex: 1;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-color: var(--surface);
+  position: relative;
+}
+
+[data-theme="light"] .canvas-container {
+  background:
+    linear-gradient(rgba(0,0,0,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-color: #ffffff;
+}
+
+.canvas-el {
+  display: block;
+  touch-action: none;
+}
+
+/* ============================================================
+   Toolbar
+   ============================================================ */
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 8px;
+  background: var(--toolbar);
+  border-right: 1px solid var(--border);
+  width: 72px;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: var(--shadow);
+  z-index: 10;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.toolbar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.toolbar-divider {
+  width: 80%;
+  height: 1px;
+  background: var(--border);
+  margin: 2px 0;
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+/* Tool buttons */
+.tool-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.tool-btn:hover {
+  background: var(--btn-hover);
+  transform: scale(1.08);
+}
+
+.tool-btn.active {
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent), 0 0 12px rgba(233,69,96,0.4);
+}
+
+/* Color picker */
+.color-picker-wrap {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--border);
+  cursor: pointer;
+}
+
+.color-input {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.color-swatch {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.preset-colors {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+  width: 100%;
+}
+
+.preset-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  transition: transform 0.1s, border-color 0.1s;
+}
+
+.preset-btn:hover {
+  transform: scale(1.15);
+}
+
+.preset-btn.selected-color {
+  border-color: var(--text);
+  transform: scale(1.15);
+}
+
+/* Sliders */
+.slider-label {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.slider-label span {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.slider {
+  width: 52px;
+  accent-color: var(--accent);
+}
+
+/* Icon buttons */
+.icon-btn {
+  width: 52px;
+  padding: 6px 4px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.icon-btn:hover:not(:disabled) {
+  background: var(--btn-hover);
+}
+
+.icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.icon-btn.danger:hover {
+  background: rgba(233,69,96,0.2);
+  color: var(--accent);
+}
+
+/* ============================================================
+   Status Bar
+   ============================================================ */
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 4px 16px;
+  background: var(--toolbar);
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.status-bar b {
+  color: var(--text);
+}
+
+.status-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+}
+
+.status-hint {
+  margin-left: auto;
+  opacity: 0.5;
+  font-size: 10px;
+}
+
+/* ============================================================
+   Responsive — Mobile
+   ============================================================ */
+@media (max-width: 600px) {
+  .app-workspace {
+    flex-direction: column-reverse;
+  }
+
+  .toolbar {
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-top: 1px solid var(--border);
+    padding: 8px 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+  }
+
+  .toolbar-group {
+    flex-direction: row;
+    flex-shrink: 0;
+  }
+
+  .toolbar-divider {
+    width: 1px;
+    height: 36px;
+    margin: 0 4px;
+  }
+
+  .toolbar-spacer {
+    display: none;
+  }
+
+  .preset-colors {
+    grid-template-columns: repeat(5, 1fr);
+    width: auto;
+  }
+
+  .slider {
+    width: 80px;
+  }
+
+  .status-bar {
+    display: none;
+  }
+}
